@@ -1,34 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-
   <url>
-    <loc>https://www.ritaliza.ac.tz/index.html</loc>
-    <lastmod>2026-03-19</lastmod>
-    <priority>1.00</priority>
+    <loc>https://gilbertmosha.github.io/RITALIZA-SECONDARY/</loc>
+    <priority>1.0</priority>
   </url>
-
   <url>
-    <loc>https://www.ritaliza.ac.tz/about.html</loc>
-    <lastmod>2026-03-19</lastmod>
-    <priority>0.80</priority>
+    <loc>https://gilbertmosha.github.io/RITALIZA-SECONDARY/about.html</loc>
+    <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://www.ritaliza.ac.tz/gallery.html</loc>
-    <lastmod>2026-03-19</lastmod>
-    <priority>0.80</priority>
+    <loc>https://gilbertmosha.github.io/RITALIZA-SECONDARY/gal.html</loc>
+    <priority>0.8</priority>
   </url>
-
   <url>
-    <loc>https://www.ritaliza.ac.tz/admission.html</loc>
-    <lastmod>2026-03-19</lastmod>
-    <priority>0.70</priority>
+    <loc>https://gilbertmosha.github.io/RITALIZA-SECONDARY/contact.html</loc>
+    <priority>0.8</priority>
   </url>
-
-  <url>
-    <loc>https://www.ritaliza.ac.tz/contact.html</loc>
-    <lastmod>2026-03-19</lastmod>
-    <priority>0.70</priority>
-  </url>
-
 </urlset>
