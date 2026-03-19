@@ -3,145 +3,193 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gallery Admin - Ritaliza Secondary School</title>
+<title>Gallery - Ritaliza Secondary School</title>
+
 <style>
-  body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; color: #333; }
-  .navbar { background: #003366; color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
-  .secret-box { width: 30px; height: 30px; cursor: pointer; opacity: 0.1; }
-  
+  body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; }
+
+  /* NAVBAR */
+  .navbar {
+    background: #003366; padding: 12px 20px; display: flex;
+    justify-content: space-between; align-items: center; color: white;
+    position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+  }
+
+  .menu-container { display: flex; align-items: center; cursor: pointer; gap: 10px; }
+  .menu-btn div { width: 25px; height: 3px; background-color: white; margin: 5px 0; border-radius: 2px; }
+  .menu-text { font-weight: bold; letter-spacing: 1px; }
+
+  /* SECRET BUTTON (Boksi la siri pembeni ya neno GALLERY) */
+  .secret-box { width: 20px; height: 20px; background: transparent; cursor: pointer; display: inline-block; vertical-align: middle; }
+
+  /* SIDE MENU */
+  .side-menu { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.4s; padding-top: 60px; }
+  .side-menu a { padding: 15px 30px; text-decoration: none; font-size: 18px; color: #bbb; display: block; border-bottom: 1px solid #222; }
+  .side-menu a:hover { color: #ffcc00; }
+
   /* ADMIN PANEL */
-  #adminPanel { display: none; background: white; padding: 20px; max-width: 600px; margin: 20px auto; border-radius: 12px; box-shadow: 0 4px 15px rgba(0,0,0,0.1); text-align: center; }
-  .admin-input { width: 95%; padding: 12px; margin: 8px 0; border: 1px solid #ddd; border-radius: 6px; box-sizing: border-box; }
-  .btn-post { background: #003366; color: white; border: none; padding: 14px; width: 95%; cursor: pointer; border-radius: 6px; font-weight: bold; }
-  
+  #adminPanel {
+    display: none; position: fixed; z-index: 3000; left: 50%; top: 50%;
+    transform: translate(-50%, -50%); background: white; padding: 25px;
+    border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); width: 340px;
+  }
+  .admin-input { width: 100%; margin: 10px 0; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+  .btn-post { background: #003366; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; }
+
   /* GALLERY GRID */
-  .container { max-width: 1200px; margin: auto; padding: 20px; }
+  .container { max-width: 1200px; margin: 30px auto; padding: 20px; text-align: center; }
   .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
   
-  .gallery-item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 2px 10px rgba(0,0,0,0.08); position: relative; transition: 0.3s; }
-  
-  /* Hapa nimeondoa rangi nyeusi (background: #000) */
-  .gallery-item img, .gallery-item iframe { 
-    width: 100%; height: 280px; object-fit: contain; display: block; background: #ffffff; border: none;
+  .gallery-item { 
+    background: #fff; border-radius: 12px; overflow: hidden; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative;
+    border: 1px solid #eee;
   }
-  
-  .caption { padding: 15px; font-weight: bold; color: #003366; text-align: center; border-top: 1px solid #eee; }
-  
-  .delete-btn { position: absolute; top: 10px; right: 10px; background: #ff4444; color: white; border: none; padding: 8px 12px; border-radius: 5px; cursor: pointer; z-index: 5; font-size: 12px; }
 
-  #loadingStatus { text-align: center; padding: 50px; font-weight: bold; color: #003366; }
-  footer { background: #111; color: white; padding: 20px; text-align: center; margin-top: 40px; }
+  /* Hii inahakikisha picha inaonekana yote (Contain) */
+  .gallery-item img, .gallery-item video, .gallery-item iframe { 
+    width: 100%; height: 280px; object-fit: contain; background: #111; display: block; border: none;
+  }
+  .caption { padding: 12px; font-weight: bold; color: #003366; font-size: 14px; background: #fff; }
+
+  footer { background: #111; color: white; padding: 30px; text-align: center; margin-top: 40px; font-size: 13px; }
 </style>
 </head>
 <body>
 
 <div class="navbar">
-  <div onclick="location.href='index.html'" style="cursor:pointer; font-weight:bold;">RITALIZA SEC</div>
-  <div class="secret-box" onclick="checkPassword()"></div>
+  <div class="menu-container" onclick="openNav()">
+    <div class="menu-btn"><div></div><div></div><div></div></div>
+    <span class="menu-text">MENU</span>
+  </div>
+  <div>
+    <span style="font-weight: bold;">GALLERY</span>
+    <div class="secret-box" onclick="checkPassword()"></div>
+  </div>
+</div>
+
+<div id="mySidenav" class="side-menu">
+  <a href="javascript:void(0)" onclick="closeNav()" style="font-size:30px; text-align:right; padding-right:20px;">&times;</a>
+  <a href="index.html">NYUMBANI</a>
+  <a href="about.html">KUHUSU SISI</a>
+  <a href="gallery.html" style="color:#ffcc00">MAKTABA (GALLERY)</a>
+  <a href="contact.html">MAWASILIANO</a>
 </div>
 
 <div id="adminPanel">
-  <h3 style="margin-top:0;">Ongeza Matukio (Admin)</h3>
+  <h3 style="margin-top:0; color:#003366;">Ongeza Kwenye Sheet</h3>
   <select id="mediaType" class="admin-input">
-    <option value="image">Picha (Link)</option>
-    <option value="video">Video (YouTube Link)</option>
+      <option value="image">Picha (Link)</option>
+      <option value="video">Video (YouTube/Link)</option>
   </select>
-  <input type="text" id="linkInput" placeholder="Paste link hapa (lazima iishie na .jpg au .png)..." class="admin-input">
-  <input type="text" id="captionInput" placeholder="Maelezo ya picha..." class="admin-input">
+  <input type="text" id="linkInput" placeholder="Paste link ya picha hapa..." class="admin-input">
+  <input type="text" id="captionInput" placeholder="Maelezo/Caption..." class="admin-input">
   <button id="submitBtn" class="btn-post" onclick="saveToSheet()">HIFADHI KWENYE MAKTABA</button>
+  <button onclick="closeAdmin()" style="width:100%; background:none; border:none; color:red; margin-top:10px; cursor:pointer;">Ghairi</button>
 </div>
 
 <div class="container">
-  <h1 style="text-align:center; color:#003366;">Gallery ya Shule</h1>
-  <div id="loadingStatus">Inapakia picha, tafadhali subiri...</div>
-  <div class="gallery-grid" id="galleryGrid"></div>
+  <h1 style="color:#003366;">Maktaba ya Ritaliza Secondary</h1>
+  <p id="loadingMsg">Inapakia picha kutoka Google Sheets...</p>
+  <div class="gallery-grid" id="galleryGrid">
+    </div>
 </div>
 
-<footer>© 2026 Ritaliza Secondary School</footer>
+<footer>
+    © 2026 Ritaliza Secondary School - Holili <br>
+    Owned by Sisters of St. Joseph of Mombasa
+</footer>
 
 <script>
-// WEKA LINK YAKO MPYA HAPA
+// LINK YAKO YA APPS SCRIPT
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzL_jm07dGzXpj6Y4XZK0Z9tTgZRkRbG62eG9EZLyFN-2COMv3FPwShoGuhuhJ_yMQI/exec";
-let isAdmin = false;
+
+function openNav() { document.getElementById("mySidenav").style.width = "260px"; }
+function closeNav() { document.getElementById("mySidenav").style.width = "0"; }
+function closeAdmin() { document.getElementById("adminPanel").style.display = "none"; }
 
 function checkPassword() {
-  if (prompt("Password ya Admin:") === "RITAsec") {
-    isAdmin = true;
+  let pass = prompt("Ingiza Password:");
+  if (pass === "RITAsec") {
     document.getElementById("adminPanel").style.display = "block";
-    loadGallery(); 
-    alert("Login Success! Unaweza kuongeza au kufuta sasa.");
+  } else {
+    alert("Password si sahihi!");
   }
 }
 
+// 1. PAKUA DATA KUTOKA GOOGLE SHEETS
 async function loadGallery() {
   const grid = document.getElementById("galleryGrid");
-  const status = document.getElementById("loadingStatus");
-  try {
-    const res = await fetch(SCRIPT_URL);
-    const data = await res.json();
-    grid.innerHTML = "";
-    status.style.display = "none";
+  const loading = document.getElementById("loadingMsg");
 
-    data.reverse().forEach(item => {
+  try {
+    const response = await fetch(SCRIPT_URL);
+    const photos = await response.json();
+    
+    grid.innerHTML = "";
+    loading.style.display = "none";
+
+    // Picha za mwisho kuwekwa ndizo zianze kuonekana (Reverse)
+    photos.reverse().forEach((item) => {
+      // item[0] = type, item[1] = link, item[2] = caption
       const div = document.createElement("div");
       div.className = "gallery-item";
       
-      let mediaContent = "";
-      if (item.type === "video") {
-        let vid = item.link.includes("watch?v=") ? item.link.replace("watch?v=", "embed/") : item.link;
-        mediaContent = `<iframe src="${vid}" allowfullscreen></iframe>`;
+      let media = "";
+      if (item[0] === "video") {
+          let vLink = item[1];
+          if(vLink.includes("watch?v=")) {
+              vLink = vLink.replace("watch?v=", "embed/");
+          }
+          media = `<iframe src="${vLink}" frameborder="0" allowfullscreen></iframe>`;
       } else {
-        // Hapa picha ikigoma kusoma itaonyesha maandishi badala ya weusi
-        mediaContent = `<img src="${item.link}" onerror="this.src='https://via.placeholder.com/300?text=Link+Hii+Sio+Picha+Halisi'">`;
+          media = `<img src="${item[1]}" onerror="this.src='https://via.placeholder.com/300?text=Picha+Haipatikani'">`;
       }
 
       div.innerHTML = `
-        ${isAdmin ? `<button class="delete-btn" onclick="deletePhoto(${item.row})">FUTA 🗑️</button>` : ""}
-        ${mediaContent}
-        <div class="caption">${item.cap || "Ritaliza Event"}</div>
+        ${media}
+        <div class="caption">${item[2] || 'Tukio la Ritaliza'}</div>
       `;
       grid.appendChild(div);
     });
   } catch (e) {
-    status.innerHTML = "Kuna tatizo la kuunganisha na Google Sheets. <br> Hakikisha Apps Script yako ni 'Anyone'.";
+    loading.innerText = "Imeshindwa kupakia maktaba. Hakikisha Sheet yako ipo Public.";
+    console.error(e);
   }
 }
 
+// 2. TUMA DATA KWENDA GOOGLE SHEETS
 async function saveToSheet() {
   const type = document.getElementById("mediaType").value;
   const link = document.getElementById("linkInput").value;
   const cap = document.getElementById("captionInput").value;
   const btn = document.getElementById("submitBtn");
 
-  if (!link) return alert("Weka link!");
-  btn.innerText = "Inatuma..."; btn.disabled = true;
+  if (!link) return alert("Tafadhali weka link ya picha!");
+
+  btn.innerText = "Inatuma...";
+  btn.disabled = true;
+
+  const data = { type, link, cap };
 
   try {
+    // Tunatumia mode: 'no-cors' kwa sababu Google Apps Script doPost inasumbua kutoa jibu moja kwa moja
     await fetch(SCRIPT_URL, {
       method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify({ action: "add", type, link, cap })
+      body: JSON.stringify(data)
     });
-    alert("Imepostiwa! Itatokea baada ya sekunde chache.");
-    setTimeout(() => { location.reload(); }, 2000);
-  } catch (e) {
-    alert("Imeshindwa kutuma.");
-    btn.disabled = false; btn.innerText = "HIFADHI KWENYE MAKTABA";
-  }
-}
 
-async function deletePhoto(rowId) {
-  if (confirm("Futa picha hii?")) {
-    await fetch(SCRIPT_URL, {
-      method: "POST",
-      mode: "no-cors",
-      body: JSON.stringify({ action: "delete", row: rowId })
-    });
+    alert("Picha imehifadhiwa! Inaweza kuchukua sekunde chache kutokea.");
+    location.reload(); 
+  } catch (e) {
+    alert("Kuna tatizo limetokea, lakini picha inaweza kuwa imetumwa. Angalia Sheet yako.");
     location.reload();
   }
 }
 
+// Pakia Gallery punde tu page inapofunguliwa
 window.onload = loadGallery;
 </script>
+
 </body>
 </html>
