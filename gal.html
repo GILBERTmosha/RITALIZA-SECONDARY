@@ -6,104 +6,53 @@
 <title>Gallery - Ritaliza Secondary School</title>
 
 <style>
-  body { margin: 0; font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; background-color: #f4f7f6; }
+  body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; }
 
-  /* TOP NAVBAR */
+  /* NAVBAR */
   .navbar {
-    background: #003366;
-    padding: 12px 20px;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    color: white;
-    position: sticky;
-    top: 0;
-    z-index: 1000;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    background: #003366; padding: 12px 20px; display: flex;
+    justify-content: space-between; align-items: center; color: white;
+    position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
   }
 
   .menu-container { display: flex; align-items: center; cursor: pointer; gap: 10px; }
   .menu-btn div { width: 25px; height: 3px; background-color: white; margin: 5px 0; border-radius: 2px; }
-  .menu-text { font-weight: bold; font-size: 16px; letter-spacing: 1px; }
+  .menu-text { font-weight: bold; letter-spacing: 1px; }
 
-  /* SECRET BUTTON */
-  .secret-box {
-    display: inline-block;
-    width: 20px;
-    height: 20px;
-    background: transparent;
-    cursor: pointer;
-    margin-left: 10px;
-    vertical-align: middle;
-  }
+  /* SECRET BUTTON (Boksi la siri pembeni ya neno GALLERY) */
+  .secret-box { width: 20px; height: 20px; background: transparent; cursor: pointer; display: inline-block; vertical-align: middle; }
 
   /* SIDE MENU */
   .side-menu { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.4s; padding-top: 60px; }
   .side-menu a { padding: 15px 30px; text-decoration: none; font-size: 18px; color: #bbb; display: block; border-bottom: 1px solid #222; }
-  .side-menu a:hover { color: #ffcc00; background: #1a1a1a; }
-  .side-menu .closebtn { position: absolute; top: 10px; right: 20px; font-size: 36px; color: white; }
+  .side-menu a:hover { color: #ffcc00; }
 
   /* ADMIN PANEL */
   #adminPanel {
-    display: none;
-    position: fixed;
-    z-index: 3000;
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    background: white;
-    padding: 25px;
-    border-radius: 15px;
-    box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    width: 350px;
+    display: none; position: fixed; z-index: 3000; left: 50%; top: 50%;
+    transform: translate(-50%, -50%); background: white; padding: 25px;
+    border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); width: 340px;
   }
-
-  .admin-input { width: 100%; margin: 10px 0; padding: 12px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
-  .btn-post { background: #003366; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; font-size: 16px; transition: 0.3s; }
-  .btn-post:hover { background: #ffcc00; color: #003366; }
+  .admin-input { width: 100%; margin: 10px 0; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+  .btn-post { background: #003366; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; }
 
   /* GALLERY GRID */
   .container { max-width: 1200px; margin: 30px auto; padding: 20px; text-align: center; }
-  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 25px; }
+  .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
   
   .gallery-item { 
-    background: #fff; 
-    border-radius: 15px; 
-    overflow: hidden; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
-    position: relative;
+    background: #fff; border-radius: 12px; overflow: hidden; 
+    box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative;
     border: 1px solid #eee;
-    transition: 0.3s;
   }
-  .gallery-item:hover { transform: translateY(-5px); }
 
-  /* MAREKEBISHO HAPA: Picha ionekane yote */
+  /* Hii inahakikisha picha inaonekana yote (Contain) */
   .gallery-item img, .gallery-item video, .gallery-item iframe { 
-    width: 100%; 
-    height: 300px; /* Unaweza kuongeza kimo hapa kama unataka ziwe ndefu zaidi */
-    object-fit: contain; /* Hii inahakikisha picha inaonekana yote bila kukatwa */
-    display: block;
-    background: #111; /* Background nyeusi ili picha zionekane vizuri */
+    width: 100%; height: 280px; object-fit: contain; background: #111; display: block; border: none;
   }
+  .caption { padding: 12px; font-weight: bold; color: #003366; font-size: 14px; background: #fff; }
 
-  .caption { padding: 15px; font-weight: bold; color: #003366; background: white; font-size: 15px; border-top: 1px solid #eee; }
-
-  .delete-btn {
-    position: absolute;
-    top: 10px;
-    right: 10px;
-    background: rgba(220, 53, 69, 0.9);
-    color: white;
-    border: none;
-    padding: 8px 15px;
-    cursor: pointer;
-    border-radius: 5px;
-    display: none;
-    font-weight: bold;
-    z-index: 10;
-  }
-
-  footer { background: #111; color: white; padding: 30px; text-align: center; margin-top: 50px; font-size: 14px; }
+  footer { background: #111; color: white; padding: 30px; text-align: center; margin-top: 40px; font-size: 13px; }
 </style>
 </head>
 <body>
@@ -113,114 +62,133 @@
     <div class="menu-btn"><div></div><div></div><div></div></div>
     <span class="menu-text">MENU</span>
   </div>
-  
   <div>
-    <span style="font-weight: bold; letter-spacing: 1px;">RITALIZA GALLERY</span>
+    <span style="font-weight: bold;">GALLERY</span>
     <div class="secret-box" onclick="checkPassword()"></div>
   </div>
 </div>
 
 <div id="mySidenav" class="side-menu">
-  <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="index.html">HOME</a>
-  <a href="about.html">ABOUT US</a>
-  <a href="admission.html">ADMISSION</a>
-  <a href="gallery.html" style="color: #ffcc00;">GALLERY</a>
-  <a href="contact.html">CONTACT</a>
+  <a href="javascript:void(0)" onclick="closeNav()" style="font-size:30px; text-align:right; padding-right:20px;">&times;</a>
+  <a href="index.html">NYUMBANI</a>
+  <a href="about.html">KUHUSU SISI</a>
+  <a href="gallery.html" style="color:#ffcc00">MAKTABA (GALLERY)</a>
+  <a href="contact.html">MAWASILIANO</a>
 </div>
 
 <div id="adminPanel">
-  <button style="float:right; border:none; background:none; cursor:pointer; font-size:24px; color:#999;" onclick="closeAdmin()">×</button>
-  <h3 style="color:#003366; margin-top:0;">Ongeza Picha/Video (URL)</h3>
-  
+  <h3 style="margin-top:0; color:#003366;">Ongeza Kwenye Sheet</h3>
   <select id="mediaType" class="admin-input">
-      <option value="image">Picha (Image Link)</option>
-      <option value="video">Video (Direct Link/YouTube)</option>
+      <option value="image">Picha (Link)</option>
+      <option value="video">Video (YouTube/Link)</option>
   </select>
-
-  <input type="text" id="linkInput" placeholder="Paste link hapa (URL)..." class="admin-input">
-  <input type="text" id="captionInput" placeholder="Andika maelezo ya picha..." class="admin-input">
-  
-  <button class="btn-post" onclick="uploadByLink()">WEKA KWENYE MAKTABA</button>
+  <input type="text" id="linkInput" placeholder="Paste link ya picha hapa..." class="admin-input">
+  <input type="text" id="captionInput" placeholder="Maelezo/Caption..." class="admin-input">
+  <button id="submitBtn" class="btn-post" onclick="saveToSheet()">HIFADHI KWENYE MAKTABA</button>
+  <button onclick="closeAdmin()" style="width:100%; background:none; border:none; color:red; margin-top:10px; cursor:pointer;">Ghairi</button>
 </div>
 
 <div class="container">
-  <h1 style="color:#003366; margin-bottom: 10px;">Maktaba ya Matukio</h1>
-  <p style="color: #666; margin-bottom: 40px;">Tazama picha na video za ufaulu, vipaji na maisha ya shule.</p>
-  
+  <h1 style="color:#003366;">Maktaba ya Ritaliza Secondary</h1>
+  <p id="loadingMsg">Inapakia picha kutoka Google Sheets...</p>
   <div class="gallery-grid" id="galleryGrid">
-    <div class="gallery-item">
-      <img src="rita.jpg" alt="Ritaliza">
-      <div class="caption">Mazingira ya Ritaliza Secondary</div>
-      <button class="delete-btn" onclick="this.parentElement.remove()">Futa</button>
     </div>
-  </div>
 </div>
 
 <footer>
-  © 2026 Ritaliza Secondary School - Holili <br>
-  Under Catholic Diocese of Moshi | Sisters of St. Joseph
+    © 2026 Ritaliza Secondary School - Holili <br>
+    Owned by Sisters of St. Joseph of Mombasa
 </footer>
 
 <script>
+// LINK YAKO YA APPS SCRIPT
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzL_jm07dGzXpj6Y4XZK0Z9tTgZRkRbG62eG9EZLyFN-2COMv3FPwShoGuhuhJ_yMQI/exec";
+
 function openNav() { document.getElementById("mySidenav").style.width = "260px"; }
 function closeNav() { document.getElementById("mySidenav").style.width = "0"; }
 function closeAdmin() { document.getElementById("adminPanel").style.display = "none"; }
 
 function checkPassword() {
-  let pass = prompt("Ingiza Password ya Admin:");
+  let pass = prompt("Ingiza Password:");
   if (pass === "RITAsec") {
     document.getElementById("adminPanel").style.display = "block";
-    document.querySelectorAll('.delete-btn').forEach(btn => btn.style.display = "block");
-    alert("Karibu Admin! Unaweza kuweka picha kwa kutumia Link.");
   } else {
     alert("Password si sahihi!");
   }
 }
 
-function uploadByLink() {
-  const mediaType = document.getElementById("mediaType").value;
-  const linkInput = document.getElementById("linkInput").value;
-  const captionInput = document.getElementById("captionInput").value;
-  const galleryGrid = document.getElementById("galleryGrid");
+// 1. PAKUA DATA KUTOKA GOOGLE SHEETS
+async function loadGallery() {
+  const grid = document.getElementById("galleryGrid");
+  const loading = document.getElementById("loadingMsg");
 
-  if (!linkInput) {
-    alert("Tafadhali weka link kwanza!");
-    return;
-  }
+  try {
+    const response = await fetch(SCRIPT_URL);
+    const photos = await response.json();
+    
+    grid.innerHTML = "";
+    loading.style.display = "none";
 
-  const newItem = document.createElement("div");
-  newItem.className = "gallery-item";
-  
-  let mediaHtml = "";
-  
-  if (mediaType === "video") {
-      let finalLink = linkInput;
-      if(linkInput.includes("youtube.com/watch?v=")) {
-          finalLink = linkInput.replace("watch?v=", "embed/");
-      }
+    // Picha za mwisho kuwekwa ndizo zianze kuonekana (Reverse)
+    photos.reverse().forEach((item) => {
+      // item[0] = type, item[1] = link, item[2] = caption
+      const div = document.createElement("div");
+      div.className = "gallery-item";
       
-      if(finalLink.includes("embed")) {
-          mediaHtml = `<iframe src="${finalLink}" frameborder="0" allowfullscreen></iframe>`;
+      let media = "";
+      if (item[0] === "video") {
+          let vLink = item[1];
+          if(vLink.includes("watch?v=")) {
+              vLink = vLink.replace("watch?v=", "embed/");
+          }
+          media = `<iframe src="${vLink}" frameborder="0" allowfullscreen></iframe>`;
       } else {
-          mediaHtml = `<video src="${linkInput}" controls loop></video>`;
+          media = `<img src="${item[1]}" onerror="this.src='https://via.placeholder.com/300?text=Picha+Haipatikani'">`;
       }
-  } else {
-      mediaHtml = `<img src="${linkInput}" alt="Uploaded" onerror="this.src='https://via.placeholder.com/300?text=Link+Sio+Sahihi'">`;
-  }
 
-  newItem.innerHTML = `
-    ${mediaHtml}
-    <div class="caption">${captionInput || 'Tukio la Ritaliza'}</div>
-    <button class="delete-btn" style="display:block;" onclick="this.parentElement.remove()">Futa</button>
-  `;
-  
-  galleryGrid.insertBefore(newItem, galleryGrid.firstChild);
-  
-  document.getElementById("linkInput").value = "";
-  document.getElementById("captionInput").value = "";
-  closeAdmin();
+      div.innerHTML = `
+        ${media}
+        <div class="caption">${item[2] || 'Tukio la Ritaliza'}</div>
+      `;
+      grid.appendChild(div);
+    });
+  } catch (e) {
+    loading.innerText = "Imeshindwa kupakia maktaba. Hakikisha Sheet yako ipo Public.";
+    console.error(e);
+  }
 }
+
+// 2. TUMA DATA KWENDA GOOGLE SHEETS
+async function saveToSheet() {
+  const type = document.getElementById("mediaType").value;
+  const link = document.getElementById("linkInput").value;
+  const cap = document.getElementById("captionInput").value;
+  const btn = document.getElementById("submitBtn");
+
+  if (!link) return alert("Tafadhali weka link ya picha!");
+
+  btn.innerText = "Inatuma...";
+  btn.disabled = true;
+
+  const data = { type, link, cap };
+
+  try {
+    // Tunatumia mode: 'no-cors' kwa sababu Google Apps Script doPost inasumbua kutoa jibu moja kwa moja
+    await fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(data)
+    });
+
+    alert("Picha imehifadhiwa! Inaweza kuchukua sekunde chache kutokea.");
+    location.reload(); 
+  } catch (e) {
+    alert("Kuna tatizo limetokea, lakini picha inaweza kuwa imetumwa. Angalia Sheet yako.");
+    location.reload();
+  }
+}
+
+// Pakia Gallery punde tu page inapofunguliwa
+window.onload = loadGallery;
 </script>
 
 </body>
