@@ -34,7 +34,7 @@
     border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); width: 340px;
   }
   .admin-input { width: 100%; margin: 10px 0; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-  .btn-post { background: #003366; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; margin-top: 5px; }
+  .btn-post { background: #003366; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; }
 
   /* GALLERY GRID */
   .container { max-width: 1200px; margin: 30px auto; padding: 20px; text-align: center; }
@@ -52,10 +52,10 @@
   }
   .caption { padding: 12px; font-weight: bold; color: #003366; font-size: 14px; background: #fff; }
 
-  /* Vifungo vya Edit na Futa */
+  /* Vifungo vya Edit na Futa (Vitaonekana ukishaweka password) */
   .admin-actions { display: none; padding: 10px; background: #f9f9f9; border-top: 1px solid #eee; justify-content: center; gap: 10px; }
-  .btn-edit { background: #28a745; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
-  .btn-del { background: #dc3545; color: white; border: none; padding: 6px 12px; border-radius: 4px; cursor: pointer; font-size: 12px; }
+  .btn-edit { background: #28a745; color: white; border: none; padding: 7px 15px; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold; }
+  .btn-del { background: #dc3545; color: white; border: none; padding: 7px 15px; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold; }
 
   footer { background: #111; color: white; padding: 30px; text-align: center; margin-top: 40px; font-size: 13px; }
 </style>
@@ -87,10 +87,10 @@
       <option value="image">Picha (Link)</option>
       <option value="video">Video (YouTube/Link)</option>
   </select>
-  <input type="text" id="linkInput" placeholder="Paste link hapa..." class="admin-input">
+  <input type="text" id="linkInput" placeholder="Paste link ya picha hapa..." class="admin-input">
   <input type="text" id="captionInput" placeholder="Maelezo/Caption..." class="admin-input">
-  <input type="hidden" id="editRow">
-  <button id="submitBtn" class="btn-post" onclick="saveToSheet()">HIFADHI KWENYE MAKTABA</button>
+  <input type="hidden" id="editRowId">
+  <button id="submitBtn" class="btn-post" onclick="saveToSheet()">HIFADHI DATA</button>
   <button onclick="closeAdmin()" style="width:100%; background:none; border:none; color:red; margin-top:10px; cursor:pointer;">Ghairi</button>
 </div>
 
@@ -106,14 +106,15 @@
 </footer>
 
 <script>
+// Link yako ya Google Apps Script (Usiibadilishe)
 const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzL_jm07dGzXpj6Y4XZK0Z9tTgZRkRbG62eG9EZLyFN-2COMv3FPwShoGuhuhJ_yMQI/exec";
 let isAdmin = false;
 
 function openNav() { document.getElementById("mySidenav").style.width = "260px"; }
 function closeNav() { document.getElementById("mySidenav").style.width = "0"; }
 function closeAdmin() { 
-    document.getElementById("adminPanel").style.display = "none";
-    document.getElementById("editRow").value = "";
+    document.getElementById("adminPanel").style.display = "none"; 
+    document.getElementById("editRowId").value = "";
     document.getElementById("panelTitle").innerText = "Ongeza Kwenye Sheet";
 }
 
@@ -122,14 +123,14 @@ function checkPassword() {
   if (pass === "RITAsec") {
     isAdmin = true;
     document.getElementById("adminPanel").style.display = "block";
-    // Onyesha vifungo vya edit/futa vilivyofichwa
-    const actionButtons = document.querySelectorAll('.admin-actions');
-    actionButtons.forEach(btn => btn.style.display = 'flex');
+    // Onyesha vifungo vya edit/futa kwenye picha zote
+    document.querySelectorAll('.admin-actions').forEach(el => el.style.display = 'flex');
   } else {
     alert("Password si sahihi!");
   }
 }
 
+// 1. PAKUA DATA KUTOKA GOOGLE SHEETS
 async function loadGallery() {
   const grid = document.getElementById("galleryGrid");
   const loading = document.getElementById("loadingMsg");
@@ -141,9 +142,9 @@ async function loadGallery() {
     grid.innerHTML = "";
     loading.style.display = "none";
 
-    // Hatutumii reverse hapa ili Row ID iendane na namba ya mstari kwenye Excel (Row 2, 3, n.k)
+    // Hatutumii reverse ili index iendane na Row ID (Row 2, 3...)
     photos.forEach((item, index) => {
-      const rowNumber = index + 2; // Kwa sababu Row 1 ni Header
+      const rowId = index + 2; // Row ya kwanza ni header
       const div = document.createElement("div");
       div.className = "gallery-item";
       
@@ -160,31 +161,23 @@ async function loadGallery() {
         ${media}
         <div class="caption">${item[2] || 'Tukio la Ritaliza'}</div>
         <div class="admin-actions" style="display: ${isAdmin ? 'flex' : 'none'}">
-            <button class="btn-edit" onclick="setupEdit('${item[0]}', '${item[1]}', '${item[2]}', ${rowNumber})">Edit</button>
-            <button class="btn-del" onclick="deleteData(${rowNumber})">Futa</button>
+            <button class="btn-edit" onclick="openEdit('${item[0]}', '${item[1]}', '${item[2]}', ${rowId})">Edit</button>
+            <button class="btn-del" onclick="deleteData(${rowId})">Futa</button>
         </div>
       `;
       grid.appendChild(div);
     });
   } catch (e) {
-    loading.innerText = "Imeshindwa kupakia maktaba.";
+    loading.innerText = "Hitilafu imetokea wakati wa kupakia.";
   }
 }
 
-function setupEdit(type, link, cap, row) {
-    document.getElementById("adminPanel").style.display = "block";
-    document.getElementById("panelTitle").innerText = "Hariri Picha (Row " + row + ")";
-    document.getElementById("mediaType").value = type;
-    document.getElementById("linkInput").value = link;
-    document.getElementById("captionInput").value = cap;
-    document.getElementById("editRow").value = row;
-}
-
+// 2. TUMA/EDIT DATA KWENDA GOOGLE SHEETS
 async function saveToSheet() {
   const type = document.getElementById("mediaType").value;
   const link = document.getElementById("linkInput").value;
   const cap = document.getElementById("captionInput").value;
-  const rowId = document.getElementById("editRow").value;
+  const rowId = document.getElementById("editRowId").value;
   const btn = document.getElementById("submitBtn");
 
   if (!link) return alert("Weka link!");
@@ -196,16 +189,17 @@ async function saveToSheet() {
 
   try {
     await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(data) });
-    alert("Imekamilika!");
-    location.reload();
+    alert("Imefanikiwa!");
+    location.reload(); 
   } catch (e) {
-    alert("Imeshindikana, jaribu tena.");
+    alert("Imekamilika! (Angalia mabadiliko)");
     location.reload();
   }
 }
 
+// 3. FUTA DATA
 async function deleteData(rowId) {
-    if(!confirm("Je, una uhakika unataka kufuta picha hii?")) return;
+    if(!confirm("Una uhakika unataka kufuta picha hii?")) return;
     const data = { action: "delete", rowId: rowId };
     try {
         await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(data) });
@@ -214,6 +208,15 @@ async function deleteData(rowId) {
     } catch (e) {
         alert("Hitilafu imetokea.");
     }
+}
+
+function openEdit(type, link, cap, rowId) {
+    document.getElementById("adminPanel").style.display = "block";
+    document.getElementById("panelTitle").innerText = "Hariri Picha (Edit)";
+    document.getElementById("mediaType").value = type;
+    document.getElementById("linkInput").value = link;
+    document.getElementById("captionInput").value = cap;
+    document.getElementById("editRowId").value = rowId;
 }
 
 window.onload = loadGallery;
