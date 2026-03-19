@@ -136,14 +136,14 @@ function getMessageData() {
         return null;
     }
     
-    // Muundo wa ujumbe utakaotumwa
     return `Jina: ${name}%0ANamba: ${phone}%0AUjumbe: ${msg}`;
 }
 
 function sendToWhatsApp() {
     const data = getMessageData();
     if(data) {
-        const adminPhone = "255742921396"; // Namba ya shule yenye WhatsApp
+        // Imebadilishwa kwenda 0793770731 (na kodi ya nchi)
+        const adminPhone = "255793770731"; 
         window.open(`https://wa.me/${adminPhone}?text=${data}`, '_blank');
     }
 }
@@ -151,8 +151,8 @@ function sendToWhatsApp() {
 function sendToSMS() {
     const data = getMessageData();
     if(data) {
-        const adminPhone = "0742921396";
-        // Inatambua kama ni Android au iOS kwa ajili ya kutuma SMS
+        // Imebadilishwa kwenda 0793770731
+        const adminPhone = "0793770731";
         const separator = (navigator.userAgent.match(/iPhone|iPad|iPod/i)) ? "&" : "?";
         window.location.href = `sms:${adminPhone}${separator}body=${decodeURIComponent(data)}`;
     }
