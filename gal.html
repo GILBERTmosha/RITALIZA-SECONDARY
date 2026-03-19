@@ -22,81 +22,26 @@
     box-shadow: 0 2px 10px rgba(0,0,0,0.2);
   }
 
-  /* MENU BUTTON SECTION */
-  .menu-container {
-    display: flex;
-    align-items: center;
-    cursor: pointer;
-    gap: 10px;
-  }
+  .menu-container { display: flex; align-items: center; cursor: pointer; gap: 10px; }
+  .menu-btn div { width: 25px; height: 3px; background-color: white; margin: 5px 0; border-radius: 2px; }
+  .menu-text { font-weight: bold; font-size: 16px; letter-spacing: 1px; }
 
-  .menu-btn {
-    display: flex;
-    flex-direction: column;
-    gap: 5px;
-  }
-
-  .menu-btn div {
-    width: 25px;
-    height: 3px;
-    background-color: white;
-    border-radius: 2px;
-  }
-
-  .menu-text {
-    font-weight: bold;
-    font-size: 16px;
-    letter-spacing: 1px;
-  }
-
-  /* SECRET BUTTON (Kiboksi cha siri) */
+  /* SECRET BUTTON */
   .secret-box {
     display: inline-block;
-    width: 18px;
-    height: 18px;
+    width: 20px;
+    height: 20px;
     background: transparent;
     cursor: pointer;
-    margin-left: 8px;
-    border: 1px solid rgba(255,255,255,0.05);
+    margin-left: 10px;
     vertical-align: middle;
   }
 
-  /* SIDE MENU (DRAWER) */
-  .side-menu {
-    height: 100%;
-    width: 0;
-    position: fixed;
-    z-index: 2000;
-    top: 0;
-    left: 0;
-    background-color: #111;
-    overflow-x: hidden;
-    transition: 0.4s;
-    padding-top: 60px;
-  }
-
-  .side-menu a {
-    padding: 15px 30px;
-    text-decoration: none;
-    font-size: 18px;
-    color: #bbb;
-    display: block;
-    transition: 0.3s;
-    border-bottom: 1px solid #222;
-  }
-
-  .side-menu a:hover {
-    color: #ffcc00;
-    background: #1a1a1a;
-  }
-
-  .side-menu .closebtn {
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 36px;
-    color: white;
-  }
+  /* SIDE MENU */
+  .side-menu { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.4s; padding-top: 60px; }
+  .side-menu a { padding: 15px 30px; text-decoration: none; font-size: 18px; color: #bbb; display: block; border-bottom: 1px solid #222; }
+  .side-menu a:hover { color: #ffcc00; background: #1a1a1a; }
+  .side-menu .closebtn { position: absolute; top: 10px; right: 20px; font-size: 36px; color: white; }
 
   /* ADMIN PANEL */
   #adminPanel {
@@ -110,11 +55,12 @@
     padding: 25px;
     border-radius: 15px;
     box-shadow: 0 10px 40px rgba(0,0,0,0.4);
-    width: 320px;
+    width: 350px;
   }
 
-  .admin-input { width: 100%; margin: 10px 0; padding: 10px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 5px; }
-  .btn-post { background: #003366; color: white; border: none; padding: 12px; width: 100%; cursor: pointer; border-radius: 5px; font-weight: bold; }
+  .admin-input { width: 100%; margin: 10px 0; padding: 12px; box-sizing: border-box; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; }
+  .btn-post { background: #003366; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; font-size: 16px; transition: 0.3s; }
+  .btn-post:hover { background: #ffcc00; color: #003366; }
 
   /* GALLERY GRID */
   .container { max-width: 1200px; margin: 30px auto; padding: 20px; text-align: center; }
@@ -122,22 +68,25 @@
   
   .gallery-item { 
     background: #fff; 
-    border-radius: 12px; 
+    border-radius: 15px; 
     overflow: hidden; 
     box-shadow: 0 5px 15px rgba(0,0,0,0.1); 
     position: relative;
     border: 1px solid #eee;
+    transition: 0.3s;
   }
+  .gallery-item:hover { transform: translateY(-5px); }
 
-  .gallery-item img, .gallery-item video { 
+  /* MAREKEBISHO HAPA: Picha ionekane yote */
+  .gallery-item img, .gallery-item video, .gallery-item iframe { 
     width: 100%; 
-    height: 350px; 
-    object-fit: contain; 
-    background: #000;
+    height: 300px; /* Unaweza kuongeza kimo hapa kama unataka ziwe ndefu zaidi */
+    object-fit: contain; /* Hii inahakikisha picha inaonekana yote bila kukatwa */
     display: block;
+    background: #111; /* Background nyeusi ili picha zionekane vizuri */
   }
 
-  .caption { padding: 15px; font-weight: bold; color: #003366; background: white; }
+  .caption { padding: 15px; font-weight: bold; color: #003366; background: white; font-size: 15px; border-top: 1px solid #eee; }
 
   .delete-btn {
     position: absolute;
@@ -146,64 +95,71 @@
     background: rgba(220, 53, 69, 0.9);
     color: white;
     border: none;
-    padding: 6px 12px;
+    padding: 8px 15px;
     cursor: pointer;
     border-radius: 5px;
     display: none;
+    font-weight: bold;
+    z-index: 10;
   }
 
-  footer { background: #111; color: white; padding: 25px; text-align: center; margin-top: 50px; }
+  footer { background: #111; color: white; padding: 30px; text-align: center; margin-top: 50px; font-size: 14px; }
 </style>
 </head>
 <body>
 
 <div class="navbar">
   <div class="menu-container" onclick="openNav()">
-    <div class="menu-btn">
-      <div></div>
-      <div></div>
-      <div></div>
-    </div>
+    <div class="menu-btn"><div></div><div></div><div></div></div>
     <span class="menu-text">MENU</span>
   </div>
   
   <div>
-    <span style="font-weight: bold;">GALLERY</span>
+    <span style="font-weight: bold; letter-spacing: 1px;">RITALIZA GALLERY</span>
     <div class="secret-box" onclick="checkPassword()"></div>
   </div>
 </div>
 
 <div id="mySidenav" class="side-menu">
   <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
-  <a href="index.html">HOME</a> <a href="about.html">ABOUT US</a>
+  <a href="index.html">HOME</a>
+  <a href="about.html">ABOUT US</a>
   <a href="admission.html">ADMISSION</a>
   <a href="gallery.html" style="color: #ffcc00;">GALLERY</a>
   <a href="contact.html">CONTACT</a>
 </div>
 
 <div id="adminPanel">
-  <button style="float:right; border:none; background:none; cursor:pointer; font-size:20px;" onclick="closeAdmin()">×</button>
-  <h3 style="color:#003366; margin-top:0;">Admin Upload</h3>
-  <input type="file" id="mediaInput" accept="image/*,video/*" class="admin-input">
-  <input type="text" id="captionInput" placeholder="Maelezo..." class="admin-input">
-  <button class="btn-post" onclick="uploadMedia()">POST MEDIA</button>
+  <button style="float:right; border:none; background:none; cursor:pointer; font-size:24px; color:#999;" onclick="closeAdmin()">×</button>
+  <h3 style="color:#003366; margin-top:0;">Ongeza Picha/Video (URL)</h3>
+  
+  <select id="mediaType" class="admin-input">
+      <option value="image">Picha (Image Link)</option>
+      <option value="video">Video (Direct Link/YouTube)</option>
+  </select>
+
+  <input type="text" id="linkInput" placeholder="Paste link hapa (URL)..." class="admin-input">
+  <input type="text" id="captionInput" placeholder="Andika maelezo ya picha..." class="admin-input">
+  
+  <button class="btn-post" onclick="uploadByLink()">WEKA KWENYE MAKTABA</button>
 </div>
 
 <div class="container">
-  <h1 style="color:#003366;">Maktaba ya Picha na Video</h1>
+  <h1 style="color:#003366; margin-bottom: 10px;">Maktaba ya Matukio</h1>
+  <p style="color: #666; margin-bottom: 40px;">Tazama picha na video za ufaulu, vipaji na maisha ya shule.</p>
   
   <div class="gallery-grid" id="galleryGrid">
     <div class="gallery-item">
       <img src="rita.jpg" alt="Ritaliza">
       <div class="caption">Mazingira ya Ritaliza Secondary</div>
-      <button class="delete-btn" onclick="this.parentElement.remove()">Delete</button>
+      <button class="delete-btn" onclick="this.parentElement.remove()">Futa</button>
     </div>
   </div>
 </div>
 
 <footer>
   © 2026 Ritaliza Secondary School - Holili <br>
-  Owned by Sisters of St. Joseph of Mombasa
+  Under Catholic Diocese of Moshi | Sisters of St. Joseph
 </footer>
 
 <script>
@@ -216,43 +172,54 @@ function checkPassword() {
   if (pass === "RITAsec") {
     document.getElementById("adminPanel").style.display = "block";
     document.querySelectorAll('.delete-btn').forEach(btn => btn.style.display = "block");
-    alert("Karibu Admin! Unaweza kuweka au kufuta picha/video.");
+    alert("Karibu Admin! Unaweza kuweka picha kwa kutumia Link.");
   } else {
     alert("Password si sahihi!");
   }
 }
 
-function uploadMedia() {
-  const mediaInput = document.getElementById("mediaInput");
-  const captionInput = document.getElementById("captionInput");
+function uploadByLink() {
+  const mediaType = document.getElementById("mediaType").value;
+  const linkInput = document.getElementById("linkInput").value;
+  const captionInput = document.getElementById("captionInput").value;
   const galleryGrid = document.getElementById("galleryGrid");
 
-  if (mediaInput.files && mediaInput.files[0]) {
-    const file = mediaInput.files[0];
-    const reader = new FileReader();
-    const isVideo = file.type.startsWith('video/');
-
-    reader.onload = function(e) {
-      const newItem = document.createElement("div");
-      newItem.className = "gallery-item";
-      
-      let mediaHtml = isVideo 
-        ? `<video src="${e.target.result}" controls loop></video>` 
-        : `<img src="${e.target.result}" alt="Uploaded">`;
-
-      newItem.innerHTML = `
-        ${mediaHtml}
-        <div class="caption">${captionInput.value || 'Matukio ya Ritaliza'}</div>
-        <button class="delete-btn" style="display:block;" onclick="this.parentElement.remove()">Delete</button>
-      `;
-      
-      galleryGrid.insertBefore(newItem, galleryGrid.firstChild);
-      captionInput.value = "";
-      mediaInput.value = "";
-      alert("Imepostiwa kikamilifu!");
-    };
-    reader.readAsDataURL(file);
+  if (!linkInput) {
+    alert("Tafadhali weka link kwanza!");
+    return;
   }
+
+  const newItem = document.createElement("div");
+  newItem.className = "gallery-item";
+  
+  let mediaHtml = "";
+  
+  if (mediaType === "video") {
+      let finalLink = linkInput;
+      if(linkInput.includes("youtube.com/watch?v=")) {
+          finalLink = linkInput.replace("watch?v=", "embed/");
+      }
+      
+      if(finalLink.includes("embed")) {
+          mediaHtml = `<iframe src="${finalLink}" frameborder="0" allowfullscreen></iframe>`;
+      } else {
+          mediaHtml = `<video src="${linkInput}" controls loop></video>`;
+      }
+  } else {
+      mediaHtml = `<img src="${linkInput}" alt="Uploaded" onerror="this.src='https://via.placeholder.com/300?text=Link+Sio+Sahihi'">`;
+  }
+
+  newItem.innerHTML = `
+    ${mediaHtml}
+    <div class="caption">${captionInput || 'Tukio la Ritaliza'}</div>
+    <button class="delete-btn" style="display:block;" onclick="this.parentElement.remove()">Futa</button>
+  `;
+  
+  galleryGrid.insertBefore(newItem, galleryGrid.firstChild);
+  
+  document.getElementById("linkInput").value = "";
+  document.getElementById("captionInput").value = "";
+  closeAdmin();
 }
 </script>
 
