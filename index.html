@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <title>Ritaliza Secondary School | Holili, Kilimanjaro - Official Website</title>
+    <meta name="description" content="Ritaliza Secondary School - Holili. Shule ya kikatoliki Jimbo la Moshi inayopokea dini zote. Inasimamiwa na Sisters of St. Joseph of Mombasa. Elimu bora na nidhamu.">
+    <meta name="keywords" content="Ritaliza Secondary School, Ritaliza Holili, Jimbo Katoliki Moshi, Sisters of St. Joseph Mombasa, Shule bora Kilimanjaro, Catholic Schools Tanzania">
+    <meta name="author" content="Gilbert Mosha">
+
+    <style>
+        body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f9f9f9; color: #333; line-height: 1.6; }
+
+        /* NAVBAR */
+        .navbar {
+            background: #003366;
+            padding: 12px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: white;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        }
+
+        .menu-container { display: flex; align-items: center; cursor: pointer; gap: 10px; }
+        .menu-btn div { width: 25px; height: 3px; background-color: white; margin: 5px 0; border-radius: 2px; }
+        .menu-text { font-weight: bold; letter-spacing: 1px; }
+
+        /* SIDE MENU */
+        .side-menu { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.4s; padding-top: 60px; }
+        .side-menu a { padding: 15px 30px; text-decoration: none; font-size: 18px; color: #bbb; display: block; border-bottom: 1px solid #222; }
+        .side-menu a:hover { color: #ffcc00; background: #1a1a1a; }
+        .side-menu .closebtn { position: absolute; top: 10px; right: 20px; font-size: 36px; color: white; }
+
+        /* HERO SECTION */
+        .hero {
+            background: linear-gradient(rgba(0,51,102,0.85), rgba(0,51,102,0.85)), url('rita.jpg');
+            background-size: cover; background-position: center;
+            color: white; padding: 100px 20px; text-align: center;
+        }
+
+        .container { max-width: 1100px; margin: -60px auto 40px; padding: 0 15px; }
+        
+        .card {
+            background: white; padding: 45px 30px; border-radius: 20px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.1); border-top: 6px solid #ffcc00;
+            text-align: center; margin-bottom: 30px;
+        }
+
+        /* FEATURES GRID */
+        .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 25px; margin: 40px 0; }
+        .feature-item { background: #fdfdfd; padding: 30px; border-radius: 15px; border: 1px solid #eee; transition: 0.3s; }
+        .feature-item:hover { transform: translateY(-8px); border-color: #ffcc00; box-shadow: 0 5px 15px rgba(0,0,0,0.05); }
+        .feature-item h3 { color: #003366; margin-bottom: 12px; }
+
+        /* BUTTON */
+        .btn-contact { 
+            display: inline-block; background: #003366; color: white; padding: 18px 50px; 
+            text-decoration: none; font-weight: bold; border-radius: 50px; 
+            transition: 0.3s; box-shadow: 0 6px 20px rgba(0,51,102,0.3);
+            margin-top: 25px;
+        }
+        .btn-contact:hover { background: #ffcc00; color: #003366; }
+
+        /* PROFILE CARD */
+        .profile-card {
+            background: #003366; color: white; padding: 35px; border-radius: 20px;
+            display: inline-block; width: 320px; margin-top: 20px;
+        }
+        .profile-card img { width: 120px; height: 120px; border-radius: 50%; border: 4px solid #ffcc00; margin-bottom: 15px; background: #fff; object-fit: cover; }
+
+        footer { background: #111; color: #999; text-align: center; padding: 40px 20px; font-size: 14px; }
+        select { padding: 10px; border-radius: 6px; font-weight: bold; border: 2px solid #ffcc00; cursor: pointer; }
+    </style>
+</head>
+<body>
+
+<div class="navbar">
+    <div class="menu-container" onclick="openNav()">
+        <div class="menu-btn"><div></div><div></div><div></div></div>
+        <span class="menu-text" id="menuBtnLabel">MENU</span>
+    </div>
+    <div class="lang-box">
+        <select id="langSelect" onchange="toggleLanguage()">
+            <option value="sw">SWAHILI</option>
+            <option value="en">ENGLISH</option>
+        </select>
+    </div>
+</div>
+
+<div id="mySidenav" class="side-menu">
+    <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+    <a href="index.html" id="linkHome">NYUMBANI</a>
+    <a href="about.html" id="linkAbout">KUHUSU SISI</a>
+    <a href="admin.html" id="linkAdmission">DAHILI / JOINING</a>
+    <a href="gal.html" id="linkGallery">PICHA & VIDEO</a>
+    <a href="contact.html" id="linkContact">MAWASILIANO</a>
+</div>
+
+<div class="hero">
+    <h1 id="mainTitle">RITALIZA SECONDARY SCHOOL</h1>
+    <p id="ownerText" style="font-size: 19px; letter-spacing: 1px;">Owned by Sisters of St. Joseph of Mombasa</p>
+</div>
+
+<div class="container">
+    <div class="card">
+        <h2 id="welcomeHeader" style="color:#003366; font-size: 28px;">Kituo cha Malezi na Elimu Bora</h2>
+        <span class="motto" id="mottoText" style="font-style:italic; font-size:24px; color:#cc0000; font-weight: bold; display: block;">"Develop Talent for Service"</span>
+        
+        <p id="welcomeMsg" style="line-height:1.9; margin-top:25px; font-size: 17px; color: #444; text-align: justify;">
+            Shule ya Sekondari Ritaliza inatoa mazingira tulivu, salama na ya kisasa kwa mwanafunzi kujifunza na kukua kikamilifu. Tunajivunia kutoa malezi ya kipekee yanayozingatia nidhamu ya hali ya juu, kumpenda Mungu, na juhudi kubwa za kitaaluma zinazoleta matokeo chanya. Ingawa shule ipo chini ya usimamizi wa Jimbo Katoliki la Moshi, tunapokea na kuheshimu wanafunzi wa dini zote na madhehebu yote kwa usawa. Chini ya usimamizi thabiti wa Masista wa Mtakatifu Yosefu wa Mombasa (Sisters of St. Joseph), tunahakikisha kila mtoto anapata malezi bora ya kimaadili. Tunalenga kuwajenga vijana kuwa viongozi wenye busara, uadilifu na upendo wa dhati kwa jamii yao. Karibu Ritaliza, mahali ambapo kipaji cha mwanafunzi kinatambuliwa na kuendelezwa kwa ajili ya huduma ya baadae.
+        </p>
+
+        <div class="features-grid">
+            <div class="feature-item">
+                <h3 id="feat1Title">🏆 Ufaulu wa Juu</h3>
+                <p id="feat1Desc">Tunajivunia rekodi imara ya ufaulu katika mitihani ya kitaifa. Wanafunzi wetu wanandaliwa vyema kwa ajili ya ushindani wa juu kimasomo.</p>
+            </div>
+            <div class="feature-item">
+                <h3 id="feat2Title">🕊️ Nidhamu na Maadili</h3>
+                <p id="feat2Desc">Nidhamu ndio nguzo yetu kuu. Tunajenga vijana wenye heshima, uadilifu, na upendo kupitia malezi ya kiroho.</p>
+            </div>
+            <div class="feature-item">
+                <h3 id="feat3Title">🌍 Dini na Umoja</h3>
+                <p id="feat3Desc">Tunapokea wanafunzi wa dini zote. Tunahimiza umoja na kuheshimiana miongoni mwa jamii yetu ya shule.</p>
+            </div>
+        </div>
+
+        <a href="contact.html" class="btn-contact" id="btnContact">WASILIANA NASI LEO</a>
+    </div>
+
+    <div style="text-align: center;">
+        <div class="profile-card">
+            <img src="rita.jpg" alt="Logo">
+            <h3 id="profName">RITALIZA SEC. SCHOOL</h3>
+            <p id="profRole">HOLILI - KILIMANJARO</p>
+        </div>
+    </div>
+</div>
+
+<footer>
+    <p id="footerText">
+        © 2026 Ritaliza Secondary School - Holili. <br>
+        Under Catholic Diocese of Moshi | Managed by Sisters of St. Joseph <br>
+        Contacts: 0742 921 396 | 0793 770 731
+    </p>
+</footer>
+
+<script>
+function openNav() { document.getElementById("mySidenav").style.width = "260px"; }
+function closeNav() { document.getElementById("mySidenav").style.width = "0"; }
+
+window.onload = function() {
+    let savedLang = localStorage.getItem('selectedLang') || 'sw';
+    document.getElementById("langSelect").value = savedLang;
+    applyLanguage(savedLang);
+};
+
+function toggleLanguage() {
+    let lang = document.getElementById("langSelect").value;
+    localStorage.setItem('selectedLang', lang);
+    applyLanguage(lang);
+}
+
+function applyLanguage(lang) {
+    if (lang === "en") {
+        document.getElementById("mainTitle").innerText = "RITALIZA SECONDARY SCHOOL";
+        document.getElementById("ownerText").innerText = "Owned by Sisters of St. Joseph of Mombasa";
+        document.getElementById("welcomeHeader").innerText = "Center for Excellence and Moral Growth";
+        document.getElementById("mottoText").innerText = '"Develop Talent for Service"';
+        
+        // MAELEZO MAREFU YA KIINGEREZA
+        document.getElementById("welcomeMsg").innerText = "Ritaliza Secondary School provides a peaceful, safe, and modern environment for students to learn and grow fully. We take pride in unique nurturing that focuses on high discipline, God-fearing values, and great academic efforts that yield positive results. Although the school is under the Catholic Diocese of Moshi, we welcome and respect students of all religions and denominations equally. Under the firm management of the Sisters of St. Joseph of Mombasa, we ensure every child receives excellent moral upbringing. We aim to build youth into wise, upright leaders with a sincere love for their community. Welcome to Ritaliza, where a student's talent is recognized and developed for future service.";
+        
+        document.getElementById("feat1Title").innerText = "🏆 High Performance";
+        document.getElementById("feat1Desc").innerText = "We boast a strong record of success in national exams. Our students are well prepared for high-level academic competition.";
+        document.getElementById("feat2Title").innerText = "🕊️ Discipline & Values";
+        document.getElementById("feat2Desc").innerText = "Discipline is our core pillar. We build respectful, upright, and loving youth through spiritual guidance.";
+        document.getElementById("feat3Title").innerText = "🌍 Religion & Unity";
+        document.getElementById("feat3Desc").innerText = "We welcome students of all religions. We encourage unity and mutual respect among our school community.";
+        
+        document.getElementById("btnContact").innerText = "CONTACT US TODAY";
+        document.getElementById("linkHome").innerText = "HOME";
+        document.getElementById("linkAbout").innerText = "ABOUT US";
+        document.getElementById("linkAdmission").innerText = "ADMISSION";
+        document.getElementById("linkGallery").innerText = "GALLERY";
+        document.getElementById("linkContact").innerText = "CONTACT";
+    } else {
+        // KISWAHILI
+        document.getElementById("mainTitle").innerText = "SHULE YA SEKONDARI RITALIZA";
+        document.getElementById("ownerText").innerText = "Inamilikiwa na Masista wa Mtakatifu Yosefu wa Mombasa";
+        document.getElementById("welcomeHeader").innerText = "Kituo cha Malezi na Elimu Bora";
+        document.getElementById("mottoText").innerText = '"Develop Talent for Service"';
+        
+        document.getElementById("welcomeMsg").innerText = "Shule ya Sekondari Ritaliza inatoa mazingira tulivu, salama na ya kisasa kwa mwanafunzi kujifunza na kukua kikamilifu. Tunajivunia kutoa malezi ya kipekee yanayozingatia nidhamu ya hali ya juu, kumpenda Mungu, na juhudi kubwa za kitaaluma zinazoleta matokeo chanya. Ingawa shule ipo chini ya usimamizi wa Jimbo Katoliki la Moshi, tunapokea na kuheshimu wanafunzi wa dini zote na madhehebu yote kwa usawa. Chini ya usimamizi thabiti wa Masista wa Mtakatifu Yosefu wa Mombasa (Sisters of St. Joseph), tunahakikisha kila mtoto anapata malezi bora ya kimaadili.";
+        
+        document.getElementById("feat1Title").innerText = "🏆 Ufaulu wa Juu";
+        document.getElementById("feat1Desc").innerText = "Tunajivunia rekodi imara ya ufaulu katika mitihani ya kitaifa. Wanafunzi wetu wanandaliwa vyema kwa ajili ya ushindani wa juu kimasomo.";
+        document.getElementById("feat2Title").innerText = "🕊️ Nidhamu na Maadili";
+        document.getElementById("feat2Desc").innerText = "Nidhamu ndio nguzo yetu kuu. Tunajenga vijana wenye heshima, uadilifu, na upendo kupitia malezi ya kiroho.";
+        document.getElementById("feat3Title").innerText = "🌍 Dini na Umoja";
+        document.getElementById("feat3Desc").innerText = "Tunapokea wanafunzi wa dini zote. Tunahimiza umoja na kuheshimiana miongoni mwa jamii yetu ya shule.";
+        
+        document.getElementById("btnContact").innerText = "WASILIANA NASI LEO";
+        document.getElementById("linkHome").innerText = "NYUMBANI";
+        document.getElementById("linkAbout").innerText = "KUHUSU SISI";
+        document.getElementById("linkAdmission").innerText = "DAHILI / JOINING";
+        document.getElementById("linkGallery").innerText = "PICHA & VIDEO";
+        document.getElementById("linkContact").innerText = "MAWASILIANO";
+    }
+}
+</script>
+
+</body>
+</html>
