@@ -3,224 +3,192 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Gallery - Ritaliza Secondary School</title>
-
+<title>Ritaliza Gallery - Admin Panel</title>
 <style>
-  body { margin: 0; font-family: 'Segoe UI', Tahoma, sans-serif; background-color: #f4f7f6; }
-
+  :root { --primary: #003366; --accent: #ffcc00; --danger: #ff4444; --success: #28a745; }
+  body { margin: 0; font-family: 'Segoe UI', sans-serif; background: #f0f2f5; color: #333; }
+  
   /* NAVBAR */
-  .navbar {
-    background: #003366; padding: 12px 20px; display: flex;
-    justify-content: space-between; align-items: center; color: white;
-    position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-  }
-
-  .menu-container { display: flex; align-items: center; cursor: pointer; gap: 10px; }
-  .menu-btn div { width: 25px; height: 3px; background-color: white; margin: 5px 0; border-radius: 2px; }
-  .menu-text { font-weight: bold; letter-spacing: 1px; }
-
-  /* SECRET BUTTON */
-  .secret-box { width: 20px; height: 20px; background: transparent; cursor: pointer; display: inline-block; vertical-align: middle; }
-
-  /* SIDE MENU */
-  .side-menu { height: 100%; width: 0; position: fixed; z-index: 2000; top: 0; left: 0; background-color: #111; overflow-x: hidden; transition: 0.4s; padding-top: 60px; }
-  .side-menu a { padding: 15px 30px; text-decoration: none; font-size: 18px; color: #bbb; display: block; border-bottom: 1px solid #222; }
-  .side-menu a:hover { color: #ffcc00; }
+  .navbar { background: var(--primary); color: white; padding: 15px 20px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; box-shadow: 0 2px 10px rgba(0,0,0,0.1); }
+  .logo { font-weight: bold; cursor: pointer; text-transform: uppercase; }
+  .secret-box { width: 30px; height: 30px; cursor: pointer; opacity: 0.02; }
 
   /* ADMIN PANEL */
-  #adminPanel {
-    display: none; position: fixed; z-index: 3000; left: 50%; top: 50%;
-    transform: translate(-50%, -50%); background: white; padding: 25px;
-    border-radius: 15px; box-shadow: 0 10px 40px rgba(0,0,0,0.4); width: 340px;
-  }
-  .admin-input { width: 100%; margin: 10px 0; padding: 12px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
-  .btn-post { background: #003366; color: white; border: none; padding: 15px; width: 100%; cursor: pointer; border-radius: 8px; font-weight: bold; }
+  #adminPanel { display: none; background: white; max-width: 500px; margin: 20px auto; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.1); text-align: center; }
+  .admin-input { width: 95%; padding: 12px; margin: 10px 0; border: 1px solid #ddd; border-radius: 8px; font-size: 14px; outline: none; }
+  .btn-submit { background: var(--primary); color: white; border: none; padding: 15px; width: 95%; cursor: pointer; border-radius: 8px; font-weight: bold; transition: 0.3s; }
+  .btn-submit:hover { background: #002244; }
+  .btn-cancel { background: none; border: none; color: var(--danger); cursor: pointer; margin-top: 10px; font-weight: bold; display: none; }
 
   /* GALLERY GRID */
-  .container { max-width: 1200px; margin: 30px auto; padding: 20px; text-align: center; }
+  .container { max-width: 1200px; margin: auto; padding: 20px; }
   .gallery-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; }
+  .gallery-item { background: white; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 15px rgba(0,0,0,0.05); position: relative; transition: 0.3s; border: 1px solid #eee; }
   
-  .gallery-item { 
-    background: #fff; border-radius: 12px; overflow: hidden; 
-    box-shadow: 0 5px 15px rgba(0,0,0,0.1); position: relative;
-    border: 1px solid #eee;
-  }
+  .gallery-item img, .gallery-item iframe { width: 100%; height: 280px; object-fit: contain; display: block; background: #ffffff; border: none; }
+  .caption { padding: 15px; font-weight: bold; color: var(--primary); text-align: center; border-top: 1px solid #eee; font-size: 14px; }
 
-  /* Picha inaonekana yote (Contain) */
-  .gallery-item img, .gallery-item video, .gallery-item iframe { 
-    width: 100%; height: 280px; object-fit: contain; background: #111; display: block; border: none;
-  }
-  .caption { padding: 12px; font-weight: bold; color: #003366; font-size: 14px; background: #fff; }
+  /* ADMIN CONTROLS */
+  .controls { position: absolute; top: 10px; left: 10px; display: none; gap: 8px; z-index: 10; }
+  .btn-action { padding: 8px 12px; border: none; border-radius: 5px; color: white; font-weight: bold; cursor: pointer; font-size: 11px; box-shadow: 0 2px 5px rgba(0,0,0,0.2); }
+  .del { background: var(--danger); }
+  .edit { background: #ffaa00; }
 
-  /* Vifungo vya Edit na Futa (Vitaonekana ukishaweka password) */
-  .admin-actions { display: none; padding: 10px; background: #f9f9f9; border-top: 1px solid #eee; justify-content: center; gap: 10px; }
-  .btn-edit { background: #28a745; color: white; border: none; padding: 7px 15px; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold; }
-  .btn-del { background: #dc3545; color: white; border: none; padding: 7px 15px; border-radius: 5px; cursor: pointer; font-size: 13px; font-weight: bold; }
-
-  footer { background: #111; color: white; padding: 30px; text-align: center; margin-top: 40px; font-size: 13px; }
+  #loading { text-align: center; padding: 40px; font-weight: bold; color: var(--primary); }
+  footer { background: #111; color: white; padding: 20px; text-align: center; margin-top: 50px; font-size: 12px; }
 </style>
 </head>
 <body>
 
 <div class="navbar">
-  <div class="menu-container" onclick="openNav()">
-    <div class="menu-btn"><div></div><div></div><div></div></div>
-    <span class="menu-text">MENU</span>
-  </div>
-  <div>
-    <span style="font-weight: bold;">GALLERY</span>
-    <div class="secret-box" onclick="checkPassword()"></div>
-  </div>
-</div>
-
-<div id="mySidenav" class="side-menu">
-  <a href="javascript:void(0)" onclick="closeNav()" style="font-size:30px; text-align:right; padding-right:20px;">&times;</a>
-  <a href="index.html">NYUMBANI</a>
-  <a href="about.html">KUHUSU SISI</a>
-  <a href="gallery.html" style="color:#ffcc00">MAKTABA (GALLERY)</a>
-  <a href="contact.html">MAWASILIANO</a>
+  <div class="logo" onclick="location.href='index.html'">RITALIZA SECONDARY</div>
+  <div class="secret-box" onclick="askPassword()"></div>
 </div>
 
 <div id="adminPanel">
-  <h3 id="panelTitle" style="margin-top:0; color:#003366;">Ongeza Kwenye Sheet</h3>
+  <h3 id="formTitle">Ongeza Tukio Jipya</h3>
+  <input type="hidden" id="rowId">
   <select id="mediaType" class="admin-input">
-      <option value="image">Picha (Link)</option>
-      <option value="video">Video (YouTube/Link)</option>
+    <option value="image">Picha (Direct Link)</option>
+    <option value="video">Video (YouTube Link)</option>
   </select>
-  <input type="text" id="linkInput" placeholder="Paste link ya picha hapa..." class="admin-input">
-  <input type="text" id="captionInput" placeholder="Maelezo/Caption..." class="admin-input">
-  <input type="hidden" id="editRowId">
-  <button id="submitBtn" class="btn-post" onclick="saveToSheet()">HIFADHI DATA</button>
-  <button onclick="closeAdmin()" style="width:100%; background:none; border:none; color:red; margin-top:10px; cursor:pointer;">Ghairi</button>
+  <input type="text" id="linkInput" placeholder="Paste Link ya picha au video hapa..." class="admin-input">
+  <input type="text" id="capInput" placeholder="Andika maelezo (Caption)..." class="admin-input">
+  <button id="mainBtn" class="btn-submit" onclick="processData()">HIFADHI KWENYE SITE</button>
+  <button id="cancelBtn" class="btn-cancel" onclick="resetForm()">GHAIRI EDITTING</button>
 </div>
 
 <div class="container">
-  <h1 style="color:#003366;">Maktaba ya Ritaliza Secondary</h1>
-  <p id="loadingMsg">Inapakia picha kutoka Google Sheets...</p>
+  <h1 style="text-align:center; color:var(--primary);">Maktaba ya Shule (Gallery)</h1>
+  <div id="loading">Inatafuta picha kwenye Google Sheets...</div>
   <div class="gallery-grid" id="galleryGrid"></div>
 </div>
 
-<footer>
-    © 2026 Ritaliza Secondary School - Holili <br>
-    Owned by Sisters of St. Joseph of Mombasa
-</footer>
+<footer>© 2026 Ritaliza Secondary School - Holili</footer>
 
 <script>
-// Link yako ya Google Apps Script (Usiibadilishe)
-const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbzL_jm07dGzXpj6Y4XZK0Z9tTgZRkRbG62eG9EZLyFN-2COMv3FPwShoGuhuhJ_yMQI/exec";
-let isAdmin = false;
+// LINK YAKO ULIYOTUMA
+const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbwf5eWL344fIqz9imv0seLkvpGk3X1dq2WotdDd75KecNNyyFA1DsGUJXDHomGuWNY32w/exec";
+let isAdminMode = false;
 
-function openNav() { document.getElementById("mySidenav").style.width = "260px"; }
-function closeNav() { document.getElementById("mySidenav").style.width = "0"; }
-function closeAdmin() { 
-    document.getElementById("adminPanel").style.display = "none"; 
-    document.getElementById("editRowId").value = "";
-    document.getElementById("panelTitle").innerText = "Ongeza Kwenye Sheet";
-}
-
-function checkPassword() {
-  let pass = prompt("Ingiza Password:");
-  if (pass === "RITAsec") {
-    isAdmin = true;
+// 1. LOGIN ADMIN
+function askPassword() {
+  if (prompt("Ingiza Password ya Admin:") === "RITAsec") {
+    isAdminMode = true;
     document.getElementById("adminPanel").style.display = "block";
-    // Onyesha vifungo vya edit/futa kwenye picha zote
-    document.querySelectorAll('.admin-actions').forEach(el => el.style.display = 'flex');
+    renderGallery();
+    alert("Login Success! Unaweza KUHARIRI (Edit) na KUFUTA (Delete) sasa.");
   } else {
     alert("Password si sahihi!");
   }
 }
 
-// 1. PAKUA DATA KUTOKA GOOGLE SHEETS
-async function loadGallery() {
+// 2. LOAD DATA FROM SHEET
+async function renderGallery() {
   const grid = document.getElementById("galleryGrid");
-  const loading = document.getElementById("loadingMsg");
-
+  const loader = document.getElementById("loading");
   try {
-    const response = await fetch(SCRIPT_URL);
-    const photos = await response.json();
-    
+    const res = await fetch(SCRIPT_URL);
+    const data = await res.json();
     grid.innerHTML = "";
-    loading.style.display = "none";
+    loader.style.display = "none";
 
-    // Hatutumii reverse ili index iendane na Row ID (Row 2, 3...)
-    photos.forEach((item, index) => {
-      const rowId = index + 2; // Row ya kwanza ni header
-      const div = document.createElement("div");
-      div.className = "gallery-item";
+    data.reverse().forEach(item => {
+      const card = document.createElement("div");
+      card.className = "gallery-item";
       
-      let media = "";
-      if (item[0] === "video") {
-          let vLink = item[1];
-          if(vLink.includes("watch?v=")) { vLink = vLink.replace("watch?v=", "embed/"); }
-          media = `<iframe src="${vLink}" frameborder="0" allowfullscreen></iframe>`;
+      let mediaHtml = "";
+      if (item.type === "video") {
+        let vUrl = item.link.includes("watch?v=") ? item.link.replace("watch?v=", "embed/") : item.link;
+        mediaHtml = `<iframe src="${vUrl}" allowfullscreen></iframe>`;
       } else {
-          media = `<img src="${item[1]}" onerror="this.src='https://via.placeholder.com/300?text=Picha+Haipatikani'">`;
+        mediaHtml = `<img src="${item.link}" onerror="this.src='https://via.placeholder.com/400x300?text=Link+Sio+Sahihi'">`;
       }
 
-      div.innerHTML = `
-        ${media}
-        <div class="caption">${item[2] || 'Tukio la Ritaliza'}</div>
-        <div class="admin-actions" style="display: ${isAdmin ? 'flex' : 'none'}">
-            <button class="btn-edit" onclick="openEdit('${item[0]}', '${item[1]}', '${item[2]}', ${rowId})">Edit</button>
-            <button class="btn-del" onclick="deleteData(${rowId})">Futa</button>
+      card.innerHTML = `
+        <div class="controls" style="display:${isAdminMode ? 'flex' : 'none'}">
+          <button class="btn-action del" onclick="deleteEntry(${item.row})">FUTA</button>
+          <button class="btn-action edit" onclick="setupEdit(${item.row}, '${item.type}', '${item.link}', '${item.cap}')">EDIT</button>
         </div>
+        ${mediaHtml}
+        <div class="caption">${item.cap || "Tukio la Ritaliza"}</div>
       `;
-      grid.appendChild(div);
+      grid.appendChild(card);
     });
-  } catch (e) {
-    loading.innerText = "Hitilafu imetokea wakati wa kupakia.";
+  } catch (err) {
+    loader.innerText = "Imeshindwa kupakia. Hakikisha uli-deploy Apps Script kama 'Anyone'.";
   }
 }
 
-// 2. TUMA/EDIT DATA KWENDA GOOGLE SHEETS
-async function saveToSheet() {
-  const type = document.getElementById("mediaType").value;
-  const link = document.getElementById("linkInput").value;
-  const cap = document.getElementById("captionInput").value;
-  const rowId = document.getElementById("editRowId").value;
-  const btn = document.getElementById("submitBtn");
+// 3. EDIT MODE SETUP
+function setupEdit(row, type, link, cap) {
+  document.getElementById("formTitle").innerText = "Hariri Picha (Edit Mode)";
+  document.getElementById("rowId").value = row;
+  document.getElementById("mediaType").value = type;
+  document.getElementById("linkInput").value = link;
+  document.getElementById("capInput").value = cap;
+  document.getElementById("mainBtn").innerText = "SASISHA (UPDATE)";
+  document.getElementById("cancelBtn").style.display = "inline";
+  window.scrollTo({top: 0, behavior: 'smooth'});
+}
 
-  if (!link) return alert("Weka link!");
-  btn.innerText = "Inahifadhi...";
-  btn.disabled = true;
+function resetForm() {
+  document.getElementById("formTitle").innerText = "Ongeza Tukio Jipya";
+  document.getElementById("rowId").value = "";
+  document.getElementById("linkInput").value = "";
+  document.getElementById("capInput").value = "";
+  document.getElementById("mainBtn").innerText = "HIFADHI KWENYE SITE";
+  document.getElementById("cancelBtn").style.display = "none";
+}
 
-  const action = rowId ? "update" : "create";
-  const data = { action, type, link, cap, rowId };
+// 4. ADD / EDIT DATA
+async function processData() {
+  const row = document.getElementById("rowId").value;
+  const payload = {
+    action: row ? "edit" : "add",
+    row: row,
+    type: document.getElementById("mediaType").value,
+    link: document.getElementById("linkInput").value,
+    cap: document.getElementById("capInput").value
+  };
 
+  if (!payload.link) return alert("Tafadhali weka link ya picha!");
+
+  document.getElementById("mainBtn").innerText = "Inatuma...";
+  document.getElementById("mainBtn").disabled = true;
+  
   try {
-    await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(data) });
-    alert("Imefanikiwa!");
-    location.reload(); 
-  } catch (e) {
-    alert("Imekamilika! (Angalia mabadiliko)");
+    await fetch(SCRIPT_URL, { 
+      method: "POST", 
+      mode: "no-cors", 
+      body: JSON.stringify(payload) 
+    });
+    alert("Imekamilika! Picha itatokea baada ya sekunde chache.");
     location.reload();
+  } catch (e) {
+    alert("Kuna tatizo limetokea.");
+    document.getElementById("mainBtn").disabled = false;
   }
 }
 
-// 3. FUTA DATA
-async function deleteData(rowId) {
-    if(!confirm("Una uhakika unataka kufuta picha hii?")) return;
-    const data = { action: "delete", rowId: rowId };
+// 5. DELETE ENTRY
+async function deleteEntry(rowNum) {
+  if (confirm("Je, una uhakika unataka kufuta picha hii kabisa kwenye Google Sheet?")) {
     try {
-        await fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify(data) });
-        alert("Imefutwa!");
-        location.reload();
+      await fetch(SCRIPT_URL, { 
+        method: "POST", 
+        mode: "no-cors", 
+        body: JSON.stringify({ action: "delete", row: rowNum }) 
+      });
+      alert("Inafuta...");
+      location.reload();
     } catch (e) {
-        alert("Hitilafu imetokea.");
+      alert("Imeshindwa kufuta.");
     }
+  }
 }
 
-function openEdit(type, link, cap, rowId) {
-    document.getElementById("adminPanel").style.display = "block";
-    document.getElementById("panelTitle").innerText = "Hariri Picha (Edit)";
-    document.getElementById("mediaType").value = type;
-    document.getElementById("linkInput").value = link;
-    document.getElementById("captionInput").value = cap;
-    document.getElementById("editRowId").value = rowId;
-}
-
-window.onload = loadGallery;
+window.onload = renderGallery;
 </script>
-
 </body>
 </html>
