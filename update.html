@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="sw">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Portal - Edit & Delete - Ritaliza</title>
+<style>
+  :root { --primary: #003366; --gold: #ffcc00; --danger: #cc0000; --bg: #f4f7f6; }
+  body { font-family: 'Segoe UI', sans-serif; background: var(--bg); margin: 0; }
+  .navbar { background: var(--primary); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center; position: sticky; top: 0; z-index: 1000; }
+  .secret-dot { width: 35px; height: 35px; cursor: pointer; opacity: 0.02; }
+  .container { max-width: 850px; margin: 20px auto; padding: 10px; }
+
+  /* ADMIN PANEL */
+  #adminSection { background: white; padding: 25px; border-radius: 15px; box-shadow: 0 10px 30px rgba(0,0,0,0.15); margin-bottom: 30px; display: none; border-top: 6px solid var(--gold); }
+  .tabs { display: flex; margin-bottom: 20px; border-radius: 8px; overflow: hidden; }
+  .tab-btn { flex: 1; padding: 12px; border: none; cursor: pointer; font-weight: bold; background: #eee; }
+  .tab-btn.active { background: var(--primary); color: white; }
+  input, textarea, select { width: 100%; padding: 12px; margin-top: 10px; border: 1px solid #ddd; border-radius: 8px; box-sizing: border-box; }
+  .btn-post { width: 100%; padding: 15px; background: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; font-weight: bold; margin-top: 15px; font-size: 16px; }
+
+  /* CARDS */
+  .update-card { background: white; margin-bottom: 25px; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 12px rgba(0,0,0,0.08); position: relative; border-left: 6px solid var(--primary); }
+  .news-card { background: #fffbe6; border-left-color: var(--gold); padding: 20px; }
+  .caption { padding: 15px; font-weight: bold; color: var(--primary); font-size: 18px; }
+  .time { font-size: 11px; color: #888; padding: 0 15px 15px; display: block; }
+  img, iframe { width: 100%; height: auto; display: block; }
+  
+  /* EDIT & DELETE BUTTONS */
+  .admin-tools { background: #f9f9f9; padding: 10px; display: none; border-top: 1px solid #eee; text-align: right; }
+  .tool-btn { padding: 8px 15px; border: none; border-radius: 5px; cursor: pointer; font-weight: bold; margin-left: 5px; font-size: 12px; color: white; }
+  .btn-del { background: var(--danger); }
+  .btn-edit { background: #555; }
+</style>
+</head>
+<body>
+
+<div class="navbar">
+  <div style="font-weight: bold; font-size: 20px;">RITALIZA UPDATES</div>
+  <div class="secret-dot" onclick="loginAdmin()"></div>
+</div>
+
+<div class="container">
+  
+  <div id="adminSection">
+    <h3 id="formTitle">Tuma Taarifa Mpya</h3>
+    <div class="tabs" id="adminTabs">
+      <button id="btnNews" class="tab-btn active" onclick="switchTab('news')">UJUMBE (Firebase)</button>
+      <button id="btnMedia" class="tab-btn" onclick="switchTab('media')">MEDIA (Drive/Excel)</button>
+    </div>
+
+    <div id="formNews">
+      <textarea id="newsText" rows="4" placeholder="Andika ujumbe hapa..."></textarea>
+      <button class="btn-post" id="btnSubmitNews" onclick="postFirebase()">RUSHISHA UJUMBE</button>
+    </div>
+
+    <div id="formMedia" style="display:none;">
+      <select id="mediaType">
+        <option value="image">Picha</option>
+        <option value="video">YouTube Video</option>
+        <option value="doc">Document (PDF/Word)</option>
+        <option value="audio">Audio (MP3)</option>
+      </select>
+      <input type="file" id="fileInput">
+      <input type="text" id="ytLink" placeholder="Link ya YouTube kama ni Video">
+      <input type="text" id="caption" placeholder="Maelezo (Caption)...">
+      <button class="btn-post" onclick="postGoogle()">UPLOAD MEDIA</button>
+    </div>
+  </div>
+
+  <div id="displayArea">
+    <p style="text-align:center;">Inapakia...</p>
+  </div>
+</div>
+
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
+
+<script>
+  // CONFIG
+  const firebaseConfig = {
+    apiKey: "AIzaSyAbUKQSlDIUEOfkE167qfMD52AitPN6XdE",
+    authDomain: "rita-upda.firebaseapp.com",
+    projectId: "rita-upda",
+    storageBucket: "rita-upda.firebasestorage.app",
+    messagingSenderId: "364595892983",
+    appId: "1:364595892983:web:ea75c75416d68601f5b9f2",
+    databaseURL: "https://rita-upda-default-rtdb.firebaseio.com"
+  };
+  firebase.initializeApp(firebaseConfig);
+  const database = firebase.database();
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxuPExvHpu-_FfMHyhHBCuw7oqDQgxq1EqAjL2DwDNSS-6aN1qCJRbor__utTNMplXi/exec";
+
+  let isAdmin = false;
+  let editingId = null;
+
+  function loginAdmin() {
+    let p = prompt("Password:");
+    if(p === "RITAsec") {
+      isAdmin = true;
+      document.getElementById("adminSection").style.display = "block";
+      document.querySelectorAll(".admin-tools").forEach(el => el.style.display = "block");
+      alert("Admin Mode: Active");
+    }
+  }
+
+  function switchTab(t) {
+    document.getElementById("formNews").style.display = t === 'news' ? "block" : "none";
+    document.getElementById("formMedia").style.display = t === 'media' ? "block" : "none";
+    document.getElementById("btnNews").className = t === 'news' ? "tab-btn active" : "tab-btn";
+    document.getElementById("btnMedia").className = t === 'media' ? "tab-btn active" : "tab-btn";
+  }
+
+  // --- FIREBASE OPS ---
+  function postFirebase() {
+    const msg = document.getElementById("newsText").value;
+    if(!msg) return;
+    if(editingId) {
+      database.ref('updates/' + editingId).update({ message: msg });
+      editingId = null;
+      document.getElementById("btnSubmitNews").innerText = "RUSHISHA UJUMBE";
+    } else {
+      database.ref('updates').push({ message: msg, date: new Date().toLocaleString('sw-TZ') });
+    }
+    document.getElementById("newsText").value = "";
+  }
+
+  function deleteFirebase(id) {
+    if(confirm("Futa ujumbe huu?")) database.ref('updates/' + id).remove();
+  }
+
+  function editFirebase(id, oldMsg) {
+    editingId = id;
+    document.getElementById("newsText").value = oldMsg;
+    document.getElementById("btnSubmitNews").innerText = "UPDATE UJUMBE";
+    window.scrollTo(0,0);
+  }
+
+  // --- GOOGLE OPS ---
+  async function postGoogle() {
+    const fileEl = document.getElementById("fileInput");
+    let fileData = null, fileName = "";
+    if (fileEl.files.length > 0) {
+      const file = fileEl.files[0];
+      fileName = file.name;
+      fileData = await new Promise(r => { const rd = new FileReader(); rd.onload = () => r(rd.result); rd.readAsDataURL(file); });
+    }
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify({
+        action: "add", type: document.getElementById("mediaType").value,
+        cap: document.getElementById("caption").value, link: document.getElementById("ytLink").value,
+        fileData: fileData, fileName: fileName
+      })
+    }).then(() => location.reload());
+  }
+
+  function deleteGoogle(row) {
+    if(confirm("Futa Media hii kutoka Excel?")) {
+      fetch(SCRIPT_URL, { method: "POST", body: JSON.stringify({ action: "delete", row: row }) })
+      .then(() => location.reload());
+    }
+  }
+
+  // --- DISPLAY LOGIC ---
+  function loadAll() {
+    const area = document.getElementById("displayArea");
+    
+    // Listen Firebase
+    database.ref('updates').on('value', snap => {
+      area.innerHTML = ""; 
+      const data = snap.val();
+      if(data) {
+        Object.keys(data).reverse().forEach(id => {
+          const item = data[id];
+          const div = document.createElement("div");
+          div.className = "update-card news-card";
+          div.innerHTML = `
+            <div>📢 ${item.message}</div><span class="time">${item.date}</span>
+            <div class="admin-tools" style="display:${isAdmin ? 'block' : 'none'}">
+              <button class="tool-btn btn-edit" onclick="editFirebase('${id}', '${item.message}')">Hariri</button>
+              <button class="tool-btn btn-del" onclick="deleteFirebase('${id}')">Futa</button>
+            </div>`;
+          area.appendChild(div);
+        });
+      }
+      loadSheetData(area);
+    });
+  }
+
+  async function loadSheetData(area) {
+    try {
+      const res = await fetch(SCRIPT_URL);
+      const data = await res.json();
+      data.reverse().forEach(item => {
+        const div = document.createElement("div");
+        div.className = "update-card";
+        let content = "";
+        if(item.type === 'image') content = `<img src="${item.link}"><div class="caption">${item.cap}</div>`;
+        else if(item.type === 'video') {
+          let vId = item.link.includes("v=") ? item.link.split("v=")[1] : item.link.split("/").pop();
+          content = `<iframe height="350" src="https://www.youtube.com/embed/${vId}" frameborder="0"></iframe><div class="caption">${item.cap}</div>`;
+        }
+        else if(item.type === 'doc') content = `<a href="${item.link}" class="doc-btn" target="_blank">📄 FUNGUA DOCUMENT: ${item.cap}</a>`;
+        else if(item.type === 'audio') content = `<div class="caption">🎵 ${item.cap}</div><audio controls><source src="${item.link}"></audio>`;
+
+        div.innerHTML = content + `
+          <div class="admin-tools" style="display:${isAdmin ? 'block' : 'none'}">
+            <button class="tool-btn btn-del" onclick="deleteGoogle(${item.row})">Futa Permanently</button>
+          </div>`;
+        area.appendChild(div);
+      });
+    } catch(e) {}
+  }
+
+  window.onload = loadAll;
+</script>
+</body>
+</html>
